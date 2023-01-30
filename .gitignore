@@ -15,7 +15,7 @@ var/
 *.egg-info/
 .installed.cfg
 *.egg
-
+secret.py
+/.idea
 # Serverless directories
 .serverless
-secret.py
