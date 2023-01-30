@@ -1,0 +1,80 @@
+org: andrrromeda
+app: aws-serverless-project
+service: aws-serverless-project
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: python3.8
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+      Resource:
+        - "Fn::GetAtt": [ blobs, Arn ]
+
+    - Effect: Allow
+      Action:
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+      Resource:
+        - "Fn::GetAtt": [ urls, Arn ]
+
+functions:
+  save_blob:
+    handler: handler.save_blob
+    timeout: 20
+    events:
+      - http:
+          path: /blobs
+          cors: true
+          method: post
+          private: false
+
+  get_blob:
+    handler: handler.get_blob
+    timeout: 20
+    events:
+      - http:
+          path: /blobs/{blobId}
+          cors: true
+          method: get
+          private: false
+  upload_file_event:
+    handler: handler.upload_file_event
+    events:
+      - s3:
+          bucket: andrrromeda-bucket
+          event: s3:ObjectCreated:*
+          existing: true
+
+resources:
+  Resources:
+    blobs:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: blobs
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+    urls:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: callback_urls
+        AttributeDefinitions:
+          - AttributeName: file_name
+            AttributeType: S
+        KeySchema:
+          - AttributeName: file_name
+            KeyType: HASH
+        ProvisionedThroughput:
+           ReadCapacityUnits: 1
+           WriteCapacityUnits: 1
