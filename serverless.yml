@@ -4,8 +4,15 @@ service: aws-serverless-project
 
 frameworkVersion: '3'
 
+custom:
+  bucket: andrrromeda-bucket
+  pythonRequirements:
+    dockerizePip: true
+    zip: true
+
 provider:
   name: aws
+  profile: default
   runtime: python3.8
   iamRoleStatements:
     - Effect: Allow
@@ -21,6 +28,16 @@ provider:
         - dynamodb:PutItem
       Resource:
         - "Fn::GetAtt": [ urls, Arn ]
+
+
+plugins:
+  - serverless-python-requirements
+package:
+  exclude:
+    - '**/*'
+  include:
+    - '*.py'
+    - 'requests'
 
 functions:
   save_blob:
@@ -42,13 +59,13 @@ functions:
           cors: true
           method: get
           private: false
+
   upload_file_event:
     handler: handler.upload_file_event
     events:
       - s3:
-          bucket: andrrromeda-bucket
+          bucket: ${self:custom.bucket}
           event: s3:ObjectCreated:*
-          existing: true
 
 resources:
   Resources:

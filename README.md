@@ -4,18 +4,15 @@
 To get this project working you need:
 
 ```
-        1. Create s3 bucket
-        2. Create file secret.py in a root directory
-        3. Input these constants into file
+        1. Create file secret.py in a root directory
+        2. Input these constants into file
     
             aws_access_key_id = <your access key>
             aws_secret_access_key = <your secret access key>
             region_name = <your region>
             bucket_name = <your bucket name>
     
-        4. in file serverless.yml change in functions/upload_file_event/events/s3/bucket your name of bucket
-        5. Create a custom layer and upload dependencies.zip into it, see https://docs.aws.amazon.com/lambda/latest/dg/configuration-layers.html 
-        6. Add layer to each lambda function, see https://docs.aws.amazon.com/lambda/latest/dg/invocation-layers.html
+        3. in file serverless.yml change in custom/bucket your name of bucket
 
 ```
    

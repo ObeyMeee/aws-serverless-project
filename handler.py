@@ -1,7 +1,13 @@
+import os
+
+try:
+    import unzip_requirements
+except ImportError:
+    pass
+
 import json
 import uuid
 import boto3
-
 import requests
 from botocore.config import Config
 
@@ -11,8 +17,9 @@ dynamoDb = boto3.resource('dynamodb')
 blobs_table = dynamoDb.Table('blobs')
 urls_table = dynamoDb.Table('callback_urls')
 s3_client = boto3.client('s3', config=Config(signature_version='s3v4'),
-                         region_name=secret.region_name, aws_access_key_id=secret.aws_access_key_id,
-                         aws_secret_access_key=secret.aws_secret_access_key)
+                         aws_access_key_id=secret.aws_access_key_id,
+                         aws_secret_access_key=secret.aws_secret_access_key,
+                         region_name=secret.region_name)
 bucket_name = secret.bucket_name
 
 
@@ -31,6 +38,7 @@ def build_response(status_code, body=None):
 
 
 def save_blob(event, context):
+    print()
     request_body = json.loads(event['body'])
     callback_url = request_body['callback_url']
     file_name = request_body['file_name']
@@ -85,8 +93,7 @@ def upload_file_event(event, context):
         'message': 'Uploading file has been successfully completed.',
         'blob_id': blob_id
     }
-    content = requests.post(callback_url, json=response)
-    print(content)
+    requests.post(callback_url, json=response)
 
 
 def put_blob(object_name):
