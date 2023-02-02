@@ -3,18 +3,19 @@
 ## Run project
 To get this project working you need:
 
-```
-        1. Create file secret.py in a root directory
-        2. Input these constants into file
+1. To install dependencies run
+
+    `$ npm install` 
+2. Create file secret.py in a root directory
+3. Input these constants into file
     
             aws_access_key_id = <your access key>
             aws_secret_access_key = <your secret access key>
             region_name = <your region>
             bucket_name = <your bucket name>
     
-        3. in file serverless.yml change in custom/bucket your name of bucket
+4. in file serverless.yml change in custom/bucket your name of bucket
 
-```
    
 Open working directory and type this into terminal window
 ```
