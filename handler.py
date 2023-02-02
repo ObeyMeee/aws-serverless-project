@@ -1,5 +1,3 @@
-import os
-
 try:
     import unzip_requirements
 except ImportError:
