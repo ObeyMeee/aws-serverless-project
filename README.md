@@ -24,7 +24,7 @@ $ serverless deploy
 You will see which endpoints and functions are available
 ## Application endpoints
 
-You can do POST request in order to get link to upload object to s3 bucket.
+You can do ```/blobs``` POST request in order to get link to upload object to s3 bucket.
 
 Example of request body is down here:
 
@@ -50,5 +50,5 @@ After you do POST request you get response that is similar to this:
 
 You can upload file to s3 bucket by this link, choosing file and sending PUT request.
 
-After file's successfully uploaded you can do GET request passing blob_id as path parameter to get link to file.
+After file's successfully uploaded you can do ```/blobs/{blobId}``` GET request passing blob_id as path parameter to get link to file.
 You can get blob_id from DynamoDB table 'blobs' or having glance on response of callback_url
